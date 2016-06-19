@@ -33,6 +33,7 @@ function AbstractConfigurator() {
     macros: [],
     icons: {},
     labels: {},
+    flowStages: {},
     saveHandler: SaveHandlerStub,
     fileClient: FileClientStub,
     ToolbarClass: null
@@ -151,6 +152,16 @@ AbstractConfigurator.Prototype = function() {
         this.config.labels[lang][labelName] = label;
       }.bind(this));
     }
+  };
+
+  this.addFlowStage = function(stage) {
+    if (!stage.name) {
+      throw new Error('A Flow stage must have a name.');
+    }
+    if (this.config.flowStages[stage.name]) {
+      throw new Error('A Flow stage with this name is already defined: ' + stage.name);
+    }
+    this.config.flowStages[stage.name] = stage;
   };
 
   this.addTextType = function(textType, options) {
@@ -314,6 +325,10 @@ AbstractConfigurator.Prototype = function() {
 
   this.getLabelProvider = function() {
     throw new Error('This method is abstract.');
+  };
+
+  this.getFlow = function() {
+    return new Flow(this.config.flowStages);
   };
 
   this.getEditingBehavior = function() {
