@@ -6,6 +6,7 @@ var extend = require('lodash/extend');
 var isString = require('lodash/isString');
 var DocumentSchema = require('../model/DocumentSchema');
 var EditingBehavior = require('../model/EditingBehavior');
+var Flow = require('../util/Flow');
 var Registry = require('../util/Registry');
 var ComponentRegistry = require('../ui/ComponentRegistry');
 var FileClientStub = require('../ui/FileClientStub');

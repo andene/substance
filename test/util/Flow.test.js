@@ -4,7 +4,7 @@ var forEach = require('lodash/forEach');
 var Flow = require('../../ui/Flow');
 var spy = require('../spy');
 
-var test = require('../test').module('ui/Flow');
+var test = require('../test').module('util/Flow');
 
 test("Compiling a flow without dependencies", function(t) {
   var flow = new Flow([{ name: 'a' }, { name: 'b'}]);
