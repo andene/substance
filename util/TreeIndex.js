@@ -139,6 +139,18 @@ TreeIndex.Arrays.Prototype = function() {
     return val;
   };
 
+  this.create = function(path) {
+    var ctx = this;
+    for (var i = 0; i < path.length; i++) {
+      var p = path[i];
+      if (!ctx[p]) {
+        ctx[p] = new TreeNode();
+      }
+      ctx = ctx[p];
+    }
+    if (!ctx.__values__) ctx.__values__ = [];
+  };
+
   this.set = function() {
     throw new Error('TreeIndex.set() is not supported for array type.');
   };
