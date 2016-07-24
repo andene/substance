@@ -27,14 +27,14 @@ module.exports = {
 
     // Substance base styles
     if (!options.noBaseStyles) {
-      config.addStyle(__dirname, '..', '..', 'styles', 'base', '_all');
+      config.addStyle(__dirname, '..', '..', 'styles', 'base', '_all.scss');
     }
 
     // Styles
     config.addStyle(__dirname, '_base.scss');
 
     // Core component styles
-    config.addStyle(__dirname, '..', '..', 'styles', 'components', '_all');
+    config.addStyle(__dirname, '..', '..', 'styles', 'components', '_all.scss');
 
     // Labels
     config.addLabel('undo', {
