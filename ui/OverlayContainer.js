@@ -19,7 +19,7 @@ function OverlayContainer() {
 OverlayContainer.Prototype = function() {
 
   this.render = function($$) {
-    var el = $$('div').addClass('sc-overlay sm-hidden');
+    var el = $$('div').addClass('sc-overlay-container sm-hidden');
     var commandStates = this.context.commandManager.getCommandStates();
     var ComponentClass = this.props.overlay;
     el.append($$(ComponentClass, {
@@ -39,8 +39,7 @@ OverlayContainer.Prototype = function() {
 
   this.position = function(hints) {
     var content = this.refs.overlayContent;
-    if (content.childNodes.length > 0) {
-      // Position based on rendering hints
+    if (content.isVisible()) {
       this._position(hints);
       this.el.removeClass('sm-hidden');
     }
