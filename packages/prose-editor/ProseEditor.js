@@ -58,6 +58,16 @@ class ProseEditor extends AbstractEditor {
     return this.refs.toolbar
   }
 
+  documentSessionUpdated() {
+    let toolbar = this.getToolbar()
+    if (toolbar) {
+      let commandStates = this.commandManager.getCommandStates()
+      toolbar.setProps({
+        commandStates: commandStates
+      })
+    }
+  }
+
 }
 
 export default ProseEditor
