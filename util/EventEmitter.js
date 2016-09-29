@@ -2,17 +2,18 @@ import oo from "./oo"
 import forEach from 'lodash/forEach'
 import isObject from 'lodash/isObject'
 
+
 /**
   Event support.
 
   @class
   @private
 */
-function EventEmitter() {
-  this.__events__ = {};
-}
+class EventEmitter {
 
-EventEmitter.Prototype = function() {
+  constructor() {
+    this.__events__ = {}
+  }
 
   /**
    * Emit an event.
@@ -21,7 +22,7 @@ EventEmitter.Prototype = function() {
    * @param ...arguments
    * @return true if a listener was notified, false otherwise.
    */
-  this.emit = function (event) {
+  emit(event) {
     if (event in this.__events__) {
       // console.log("Emitting event %s (%d listeners) on", event, this.__events__[event].length, this);
       // Clone the list of bindings so that handlers can remove or add handlers during the call.
@@ -35,13 +36,8 @@ EventEmitter.Prototype = function() {
       return true;
     }
     return false;
-  };
-
-  // sort descending as a listener with higher priority should be
-  // called earlier
-  function byPriorityDescending(a, b) {
-    return b.priority - a.priority;
   }
+
 
   /**
    * Connect a listener to a set of events.
@@ -57,10 +53,10 @@ EventEmitter.Prototype = function() {
    * @param {Number} hash with `priority` as ordering hint (default is 0).
    * @chainable
    */
-  this.connect = function (obj, methods, options) { // eslint-disable-line no-unused-vars
+  connect(...args) { // eslint-disable-line no-unused-vars
     console.warn('DEPRECATED: Use EventEmitter.on(event, method, context) instead.');
-    return _connect.apply(this, arguments);
-  };
+    return this._connect(...args)
+  }
 
   /**
    * Disconnect a listener (all bindings).
@@ -69,10 +65,10 @@ EventEmitter.Prototype = function() {
    * @param {Object} listener
    * @chainable
    */
-  this.disconnect = function(listener) {
+  disconnect(...args) {
     console.warn('DEPRECATED: Use EventEmitter.off(listener) instead.');
-    return _disconnect.call(this, listener);
-  };
+    return this._disconnect(...args)
+  }
 
   /**
    * Subscribe a listener to an event.
@@ -82,14 +78,14 @@ EventEmitter.Prototype = function() {
    * @param {Object} context
    * @param {Object} options
    */
-  this.on = function(event, method, context, options) {
+  on(event, method, context, options) {
     var priority = 0;
     if (arguments.length === 4) {
       priority = options.priority || priority;
     }
-    _on.call(this, event, method, context, priority);
-    this.__events__[event].sort(byPriorityDescending);
-  };
+    this._on(event, method, context, priority);
+    this.__events__[event].sort(byPriorityDescending)
+  }
 
   /**
    * Unsubscrive a listener from an event.
@@ -99,35 +95,14 @@ EventEmitter.Prototype = function() {
    * @param {Object} context
    * @param {Object} options
    */
-  this.off = function(event, method, context) { // eslint-disable-line no-unused-vars
+  off(event, method, context) { // eslint-disable-line no-unused-vars
     if (arguments.length === 1 && isObject(arguments[0])) {
-      _disconnect.call(this, arguments[0]);
+      this._disconnect(arguments[0])
     } else {
-      _off.apply(this, arguments);
-    }
-  };
-
-  function validateMethod(method, context) {
-    // Validate method and context
-    if (typeof method === 'string') {
-      // Validate method
-      if (context === undefined || context === null) {
-        throw new Error( 'Method name "' + method + '" has no context.' );
-      }
-      if (!(method in context)) {
-        // Technically the method does not need to exist yet: it could be
-        // added before call time. But this probably signals a typo.
-        throw new Error( 'Method not found: "' + method + '"' );
-      }
-      if (typeof context[method] !== 'function') {
-        // Technically the property could be replaced by a function before
-        // call time. But this probably signals a typo.
-        throw new Error( 'Property "' + method + '" is not a function' );
-      }
-    } else if (typeof method !== 'function') {
-      throw new Error( 'Invalid callback. Function or method name expected.' );
+      this._off.apply(this, arguments)
     }
   }
+
 
   /**
    * Internal implementation for registering a listener.
@@ -137,10 +112,10 @@ EventEmitter.Prototype = function() {
    * @param {Object} context
    * @private
    */
-  function _on(event, method, context, priority) {
+  _on(event, method, context, priority) {
     /* eslint-disable no-invalid-this */
     var bindings;
-    validateMethod( method, context );
+    _validateMethod( method, context );
     if (this.__events__.hasOwnProperty(event)) {
       bindings = this.__events__[event];
     } else {
@@ -165,7 +140,7 @@ EventEmitter.Prototype = function() {
    * @param {Object} context
    * @private
    */
-  function _off(event, method, context) {
+  _off(event, method, context) {
     /* eslint-disable no-invalid-this */
     var i, bindings;
     if ( arguments.length === 1 ) {
@@ -173,7 +148,7 @@ EventEmitter.Prototype = function() {
       delete this.__events__[event];
       return this;
     }
-    validateMethod( method, context );
+    _validateMethod( method, context );
     if ( !( event in this.__events__ ) || !this.__events__[event].length ) {
       // No matching bindings
       return this;
@@ -203,14 +178,14 @@ EventEmitter.Prototype = function() {
    *
    * @private
    */
-  function _connect(obj, methods, options) {
+  _connect(obj, methods, options) {
     /* eslint-disable no-invalid-this */
     var priority = 0;
     if (arguments.length === 3) {
       priority = options.priority || priority;
     }
     forEach(methods, function(method, event) {
-      _on.call(this, event, method, obj, priority);
+      this._on.call(event, method, obj, priority);
       this.__events__[event].sort(byPriorityDescending);
     }.bind(this));
     return this;
@@ -222,7 +197,7 @@ EventEmitter.Prototype = function() {
    *
    * @private
    */
-  function _disconnect(context) {
+  _disconnect(context) {
     /* eslint-disable no-invalid-this */
     // Remove all connections to the context
     forEach(this.__events__, function(bindings, event) {
@@ -230,7 +205,7 @@ EventEmitter.Prototype = function() {
         // bindings[i] may have been removed by the previous steps
         // so check it still exists
         if (bindings[i] && bindings[i].context === context) {
-          _off.call(this, event, bindings[i].method, context);
+          this._off(event, bindings[i].method, context);
         }
       }
     }.bind(this));
@@ -238,16 +213,45 @@ EventEmitter.Prototype = function() {
     /* eslint-enable no-invalid-this */
   }
 
-  this._debugEvents = function() {
+  _debugEvents() {
     /* eslint-disable no-console */
     console.log('### EventEmitter: ', this);
     forEach(this.__events__, function(handlers, name) {
       console.log("- %s listeners for %s: ", handlers.length, name, handlers);
     });
     /* eslint-enable no-console */
-  };
-};
+  }
+}
 
+function _validateMethod(method, context) {
+  // Validate method and context
+  if (typeof method === 'string') {
+    // Validate method
+    if (context === undefined || context === null) {
+      throw new Error( 'Method name "' + method + '" has no context.' );
+    }
+    if (!(method in context)) {
+      // Technically the method does not need to exist yet: it could be
+      // added before call time. But this probably signals a typo.
+      throw new Error( 'Method not found: "' + method + '"' );
+    }
+    if (typeof context[method] !== 'function') {
+      // Technically the property could be replaced by a function before
+      // call time. But this probably signals a typo.
+      throw new Error( 'Property "' + method + '" is not a function' );
+    }
+  } else if (typeof method !== 'function') {
+    throw new Error( 'Invalid callback. Function or method name expected.' );
+  }
+}
+
+// sort descending as a listener with higher priority should be
+// called earlier
+function byPriorityDescending(a, b) {
+  return b.priority - a.priority;
+}
+
+// TODO: Remove as soon as all occurences of EventEmitter.extend are gone.
 oo.initClass(EventEmitter);
 
 export default EventEmitter;
