@@ -5,6 +5,7 @@ import DOMElement from './DOMElement'
 import DelegatedEvent from './DelegatedEvent'
 
 class BrowserDOMElement extends DOMElement {
+
   constructor(el) {
     super()
     console.assert(el instanceof window.Node, "Expecting native DOM node.")
@@ -15,7 +16,7 @@ class BrowserDOMElement extends DOMElement {
   }
 
   get _isBrowserDOMElement() {
-    return true 
+    return true
   }
 
   getNativeElement() {
@@ -683,9 +684,9 @@ class TextNode extends DOMElement.TextNode {
       this[name] = BrowserDOMElement.prototype[name]
     }.bind(this))
   }
-  
+
   get _isBrowserDOMElement() {
-    return true 
+    return true
   }
 }
 

@@ -5,24 +5,24 @@ import createTestArticle from '../fixtures/createTestArticle'
 import createTestComponentRegistry from '../fixtures/createTestComponentRegistry'
 
 export default function setupContainerEditor(fixture, el) {
-  var doc = createTestArticle(fixture)
-  var docSession = new DocumentSession(doc)
-  var componentRegistry = createTestComponentRegistry()
-  var App = Component.extend({
-    getChildContext: function() {
+  const doc = createTestArticle(fixture)
+  const docSession = new DocumentSession(doc)
+  const componentRegistry = createTestComponentRegistry()
+  class App extends Component {
+    getChildContext() {
       return {
         documentSession: docSession,
         document: doc,
         componentRegistry: componentRegistry
       }
-    },
-    render: function($$) {
+    }
+    render($$) {
       return $$('div').append($$(ContainerEditor, {
         node: doc.get('body')
       }).ref('editor'))
-    },
-  })
-  var app
+    }
+  }
+  let app
   if (el) {
     app = App.mount(el)
   } else {
