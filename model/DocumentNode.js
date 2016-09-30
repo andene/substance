@@ -16,10 +16,7 @@ import EventEmitter from '../util/EventEmitter'
 
 
   ```js
-  class Todo {
-    Todo.super.apply(this, arguments)
-  }
-  TextBlock.extend(Todo)
+  class Todo extends TextBlock {}
   Todo.define({
     type: 'todo',
     content: 'text',

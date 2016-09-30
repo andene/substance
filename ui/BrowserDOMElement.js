@@ -1,6 +1,5 @@
 import isString from 'lodash/isString'
 import isNumber from 'lodash/isNumber'
-import oo from '../util/oo'
 import DOMElement from './DOMElement'
 import DelegatedEvent from './DelegatedEvent'
 
@@ -739,8 +738,6 @@ class BrowserWindow {
     return BrowserDOMElement.prototype.removeEventListener.apply(this, arguments)
   }
 }
-
-oo.initClass(BrowserWindow)
 
 BrowserDOMElement.getBrowserWindow = function() {
   if (window.__BrowserDOMElementWrapper__) return window.__BrowserDOMElementWrapper__

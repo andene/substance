@@ -1,4 +1,3 @@
-import oo from '../util/oo'
 import extend from 'lodash/extend'
 import forEach from 'lodash/forEach'
 import isEqual from 'lodash/isEqual'
@@ -10,6 +9,7 @@ import Registry from '../util/Registry'
   @class
 */
 class CommandManager {
+
   constructor(context, commands) {
     if (!context.documentSession) {
       throw new Error('DocumentSession required.')
@@ -99,7 +99,5 @@ class CommandManager {
   }
 
 }
-
-oo.initClass(CommandManager)
 
 export default CommandManager

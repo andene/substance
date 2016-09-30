@@ -1,5 +1,4 @@
 import last from 'lodash/last'
-import oo from '../util/oo'
 import Coordinate from '../model/Coordinate'
 import Range from '../model/Range'
 import DefaultDOMElement from './DefaultDOMElement'
@@ -21,6 +20,7 @@ import IsolatedNodeComponent from '../packages/isolated-node/IsolatedNodeCompone
  * @param {Element} rootElement
  */
 class DOMSelection {
+
   constructor(surface) {
     this.surface = surface
     this._wrange = window.document.createRange()
@@ -500,7 +500,5 @@ function _createRange(start, end, isReverse, containerId) {
 function _createRangeForIsolatedBlockNode(nodeId, containerId) {
   return new Range(new Coordinate([nodeId], 0), new Coordinate([nodeId], 1), false, containerId)
 }
-
-oo.initClass(DOMSelection)
 
 export default DOMSelection

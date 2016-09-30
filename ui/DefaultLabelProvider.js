@@ -1,9 +1,6 @@
-import oo from '../util/oo'
-
 /**
  Default label provider implementation
 */
-
 class LabelProvider {
   constructor(labels, lang) {
     this.lang = lang || 'en'
@@ -16,7 +13,5 @@ class LabelProvider {
     return labels[name] || name
   }
 }
-
-oo.initClass(LabelProvider)
 
 export default LabelProvider

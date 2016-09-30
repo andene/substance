@@ -1,4 +1,3 @@
-import oo from '../util/oo'
 import platform from '../util/platform'
 import substanceGlobals from '../util/substanceGlobals'
 import documentHelpers from '../model/documentHelpers'
@@ -181,7 +180,7 @@ class Clipboard {
       args.text = plainText
       return surface.paste(tx, args)
     })
-  };
+  }
 
   onBeforePasteShim() {
     let surface = this.getSurface()
@@ -293,8 +292,6 @@ class Clipboard {
   }
 
 }
-
-oo.initClass(Clipboard);
 
 /*
   A shim for browsers with an unsupported native clipboard.

@@ -245,8 +245,6 @@ class DocumentChange {
   }
 }
 
-oo.initClass(DocumentChange)
-
 DocumentChange.deserialize = function(str) {
   var opSerializer = new OperationSerializer()
   var data = JSON.parse(str)

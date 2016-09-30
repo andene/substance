@@ -33,25 +33,6 @@ var __id__ = 0
   @class Document
   @abstract
   @extends model/AbstractDocument
-  @example
-
-  ```js
-  import Document from 'substance/model/Document'
-  import articleSchema from './myArticleSchema'
-  var Article = function() {
-    Article.super.call(articleSchema)
-
-    // We set up a container that holds references to
-    // block nodes (e.g. paragraphs and figures)
-    this.create({
-      type: "container",
-      id: "body",
-      nodes: []
-    })
-  }
-
-  Document.extend(Article)
-  ```
 */
 
 /**
