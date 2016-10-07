@@ -27,7 +27,7 @@ node_modules
 # Users Environment Variables
 .lock-wscript
 
-dist
+#dist
 dist/doc
 tmp
 .npm
