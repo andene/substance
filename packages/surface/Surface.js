@@ -256,7 +256,7 @@ class Surface extends Component {
     let editorSession = this.editorSession
     let surfaceId = this.getId()
     return editorSession.transaction(function(tx, args) {
-      tx.before.surfaceId = surfaceId
+      tx._before.surfaceId = surfaceId
       return transformation(tx, args)
     }, info)
   }
